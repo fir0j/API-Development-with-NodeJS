@@ -1,15 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Mongoose = require('mongoose');
+const morgan = require('morgan');
 
 const app = express();
+const url = 'mongodb://localhost:27017/ZyperDB';
+
+//bring in routes
+const serverInfoRoute = require('./routes/serverInfoRoute');
+
+//using middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(morgan('dev'));
 
-const url = 'mongodb://localhost:27017/ZyperDB';
-app.get('/', (request, response) => {
-	response.send('server is running on port 3000');
-});
+//using routes as middleware
+app.use('/', serverInfoRoute);
 
 app.get('/users', (request, response) => {
 	var resultArray = [];
@@ -18,7 +24,6 @@ app.get('/users', (request, response) => {
 			response.send('Error Connecting to the database');
 		} else {
 			console.log('Connection Successful');
-			// var db = client.db('ZyperDB');
 			var cursor = db.collection('users').find();
 			cursor.forEach(
 				function(doc, err) {
@@ -34,6 +39,11 @@ app.get('/users', (request, response) => {
 	});
 });
 
+app.listen(3000, () => {
+	console.log('Server is runnig successfully on port 3000');
+});
+
+/*
 app.post('/insert', (request, response) => {
 	var item = {
 		title: request.body.title,
@@ -49,6 +59,4 @@ app.post('/insert', (request, response) => {
 	});
 });
 
-app.listen(3000, () => {
-	console.log('app running on port 3000');
-});
+*/
