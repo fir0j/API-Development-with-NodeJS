@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-//using routes as middleware
+//mounting routes using middleware
 app.use('/', root);
 app.use('/', users);
 

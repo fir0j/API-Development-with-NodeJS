@@ -2,6 +2,25 @@ const Mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/ZyperDB';
 const Users = require('../models/Users');
 
+exports.createUsers = (request, response) => {
+	const user = new Users(request.body);
+	console.log('Creating new user:', request.body);
+
+	Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
+		user.save((err, result) => {
+			if (err) {
+				return response.status(400).json({
+					error: err
+				});
+			}
+
+			response.status(200).json({
+				user: result
+			});
+		});
+	});
+};
+
 exports.getUsers = (request, response) => {
 	var resultArray = [];
 	Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
@@ -21,25 +40,6 @@ exports.getUsers = (request, response) => {
 				}
 			);
 		}
-	});
-};
-
-exports.createUsers = (request, response) => {
-	const user = new Users(request.body);
-	console.log('Creating new user:', request.body);
-
-	Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-		user.save((err, result) => {
-			if (err) {
-				return response.status(400).json({
-					error: err
-				});
-			}
-
-			response.status(200).json({
-				user: result
-			});
-		});
 	});
 };
 
