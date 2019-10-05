@@ -7,16 +7,8 @@ exports.createUsers = (request, response) => {
 	console.log('Creating new user:', request.body);
 
 	Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-		user.save((err, result) => {
-			if (err) {
-				return response.status(400).json({
-					error: err
-				});
-			}
-
-			response.status(200).json({
-				user: result
-			});
+		user.save().then((user) => {
+			response.json({ user });
 		});
 	});
 };
@@ -44,6 +36,17 @@ exports.getUsers = (request, response) => {
 };
 
 /*
+		user.save((err, result) => {
+			if (err) {
+				return response.status(400).json({
+					error: err
+				});
+			}
+			response.status(200).json({
+				user: result
+			});
+		});
+		
 Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
 	db.collection('users').insertOne(user, function(err, result) {
 		console.log('Item inserted');

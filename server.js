@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-
 const app = express();
+const expressValidator = require('express-validator');
 
 //bring in routes
 const root = require('./routes/root');
@@ -12,6 +12,7 @@ const users = require('./routes/users');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+app.use(expressValidator());
 
 //mounting routes using middleware
 app.use('/', root);
