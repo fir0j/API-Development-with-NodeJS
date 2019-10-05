@@ -15,4 +15,5 @@ const usersSchema = new Mongoose.Schema({
 		maxlength: 150
 	}
 });
+
 module.exports = Mongoose.model('Users', usersSchema);
