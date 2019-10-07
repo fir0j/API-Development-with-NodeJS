@@ -1,4 +1,4 @@
-exports.createUsersValidator = (request, response, next) => {
+exports.userValidator = (request, response, next) => {
 	//handling error for firstName
 	request.check('firstName', 'Write the First Name').notEmpty();
 	request.check('firstName', 'First Name must be between 4 to 150 characters').isLength({
