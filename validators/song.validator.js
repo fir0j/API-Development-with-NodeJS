@@ -6,21 +6,29 @@ exports.songValidator = (request, response, next) => {
 		max: 150
 	});
 
-	// handling error artist
-	request.checkBody('Artist.firstName', 'Write the artist first name').notEmpty();
-	request.checkBody('Artist.firstName', 'Artist first name must be between 4 to 150 characters').isLength({
+	//handling error artist
+	request.checkBody('artist.firstName', 'Write the artist first name').notEmpty();
+	request.checkBody('artist.firstName', 'Artist first name must be between 4 to 150 characters').isLength({
 		min: 4,
 		max: 150
 	});
 
-	request.checkBody('Artist.lastName', 'Write the artist last name').notEmpty();
-	request.checkBody('Artist.lastName', 'Artist last name must be between 4 to 150 characters').isLength({
+	request.checkBody('artist.lastName', 'Write the artist last name').notEmpty();
+	request.checkBody('artist.lastName', 'Artist last name must be between 4 to 150 characters').isLength({
 		min: 4,
 		max: 150
 	});
-	request.checkBody('Artist.isFamous', "Write isFamous as 'true' or 'false' ").isBoolean();
+	request.checkBody('artist.isFamous', "Write isFamous as 'true' or 'false' ").isBoolean();
 	request.check('album', 'Write the album name ').notEmpty();
+	request.check('album', 'album must be between 4 to 150 characters').isLength({
+		min: 4,
+		max: 150
+	});
 	request.check('genre', 'Write the genre name').notEmpty();
+	request.check('genre', 'genre must be between 4 to 150 characters').isLength({
+		min: 4,
+		max: 150
+	});
 
 	//check for Errors
 	const errors = request.validationErrors();

@@ -1,11 +1,10 @@
 const songSchema = require('../models/song.model');
 
 exports.postSong = (request, response) => {
-	const song = new songSchema(request.body);
-	console.log('Posting a song:', request.body);
+	let song = new songSchema(request.body);
 	song
 		.save()
-		.then((songs) => response.json({ message: 'success' }))
+		.then((result) => response.json({ message: 'success' }))
 		.catch((err) => response.json({ message: 'unable to post song' }));
 };
 
@@ -21,11 +20,11 @@ exports.getSong = (request, response) => {
 };
 
 exports.deleteSong = (request, response) => {
-	let song = new Songs(request.body);
-	song.deleteOne({}).then((err, result) => {
-		if (err) return response.json({ message: 'unable to delete song' });
-		response.json({ message: 'One document deleted' });
-	});
+	let song = new songSchema(request.body);
+	song
+		.deleteOne()
+		.then((result) => response.json({ message: 'delete success' }))
+		.catch((err) => response.json({ message: 'failed to delete song' }));
 };
 
 // exports.comment = (request, response) => {
