@@ -1,54 +1,53 @@
-const Mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/ZyperDB';
-const Users = require('../models/user.model');
+const userSchema = require('../models/user.model');
 
-exports.getUsers = (request, response) => {
-	var resultArray = [];
-	Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-		if (err) {
-			response.send('Error Connecting to the database');
-		} else {
-			console.log('Connection Successful');
-			var cursor = db.collection('users').find();
-			cursor.forEach(
-				function(doc, err) {
-					resultArray.push(doc);
-				},
-				function() {
-					db.close();
-					response.send(resultArray);
-					console.log('Data sent Successfully');
-				}
-			);
-		}
-	});
-};
-
-exports.createUsers = (request, response) => {
-	const user = new Users(request.body);
+exports.postUser = (request, response) => {
+	const user = new userSchema(request.body);
 	console.log('Creating new user:', request.body);
+	user
+		.save()
+		.then((user) => response.json({ message: 'success' }))
+		.catch((err) => response.json({ message: 'unable to create new user' }));
 
-	Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-		user.save().then((user) => {
-			response.json({ user });
-		});
+	/*
+	Approach 2:
+	==========
+	user.save().then((user, err) => {
+		if(err) return response.json(err);
+		return response.json(users)
 	});
+		
+	Approach 3:
+	==========
+	user.save((user, err) => {
+		if(err) return response.json(err);
+		return response.json(users)
+	});
+
+
+	*/
 };
 
-exports.comment = (request, response) => {
-	let comment = request.body.comment;
-	comment.postedBy = request.body.userId;
-	Post.findByIdAndUpdate(request.body.songId, { $push: { comments: comment } }, { new: true })
-		.populate('comments.postedby', '_id firstname')
-		.populate('postedBy', '_id firstname')
-		.exec((err, result) => {
-			if (err) {
-				return response.status(400).json({ error: err });
-			} else {
-				response.json(result);
-			}
-		});
+exports.getUser = (request, response) => {
+	const user = userSchema;
+	user.find().then((users) => response.json(users)).catch((err) => response.json(err));
 };
+
+// exports.comment = (request, response) => {
+// 	let comment = request.body.comment;
+// 	const song = new Songs(request.body);
+// 	comment.postedBy = request.body.userId;
+// 	song
+// 		.findByIdAndUpdate(request.body.songId, { $push: { comments: comment } }, { new: true })
+// 		.populate('comments.postedby', '_id firstname')
+// 		.populate('postedBy', '_id firstname')
+// 		.exec((err, result) => {
+// 			if (err) {
+// 				return response.status(400).json({ error: err });
+// 			} else {
+// 				response.json(result);
+// 			}
+// 		});
+// };
 
 // exports.uncomment = (request, response) => {
 // 	comment.postedBy = request.body.userId;

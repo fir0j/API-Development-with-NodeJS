@@ -1,14 +1,14 @@
-const Mongoose = require('mongoose');
-const { ObjectId } = Mongoose.Schema;
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema;
 //considering one to one relationship between song and artist
 //Also assuming one user can add only one comment to a song
 
-const songsSchema = new Mongoose.Schema({
+const songSchema = new mongoose.Schema({
 	title: {
 		type: String,
 		required: true
 	},
-	Artist: {
+	artist: {
 		firstName: {
 			type: String,
 			required: true
@@ -30,14 +30,14 @@ const songsSchema = new Mongoose.Schema({
 	genre: {
 		type: String,
 		required: true
-	},
-	comments: [
-		{
-			comment: String,
-			postedBy: { type: ObjectId, ref: 'Users' },
-			createdOn: { type: Date, default: Date.now }
-		}
-	]
+	}
+	// comments: [
+	// 	{
+	// 		comment: String,
+	// 		postedBy: { type: ObjectId, ref: 'Users' },
+	// 		createdOn: { type: Date, default: Date.now }
+	// 	}
+	// ]
 });
 
-module.exports = Mongoose.model('Songs', songsSchema);
+module.exports = mongoose.model('Songs', songSchema);

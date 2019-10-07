@@ -1,59 +1,30 @@
-const Mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/ZyperDB';
-const Songs = require('../models/song.model');
+const songSchema = require('../models/song.model');
 
 exports.postSong = (request, response) => {
-	const song = new Songs(request.body);
+	const song = new songSchema(request.body);
 	console.log('Posting a song:', request.body);
-
-	Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-		song.save((err, song) => {
-			if (err) {
-				return response.json(err);
-			}
-			response.json(song);
-		});
-	});
+	song
+		.save()
+		.then((songs) => response.json({ message: 'success' }))
+		.catch((err) => response.json({ message: 'unable to post song' }));
 };
 
 exports.getSong = (request, response) => {
-	Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-		songsArray = [];
-		if (err) {
-			response.send('Error Connecting to the database');
-		} else {
-			console.log('Connection Successful');
-			var cursor = db.collection('songs').find();
-			// .populate('postedBy', '_id name')
-			// .populate('comment', 'comment createdOn')
-			// .populate('comments, postedBy', '_id name');
-			cursor.forEach(
-				function(doc, err) {
-					songsArray.push(doc);
-				},
-				function() {
-					db.close();
-					response.send(songsArray);
-				}
-			);
-		}
-	});
+	let song = songSchema;
+	song
+		.find()
+		.then((songs) => response.json(songs))
+		.catch((err) => response.json({ message: 'failed to fetch songs' }));
+	// .populate('postedBy', '_id name')
+	// .populate('comment', 'comment createdOn')
+	// .populate('comments, postedBy', '_id name');
 };
 
 exports.deleteSong = (request, response) => {
-	var songsArray = [];
-	Mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, db) {
-		if (err) {
-			response.send('Error Connecting to the database');
-		} else {
-			var cursor = db.collection('songs').deleteOne({});
-			response.json({ result: 'One document deleted' });
-			// function() {
-			// 	db.close();
-			// 	response.send(songsArray);
-			// 	console.log('Data sent Successfully');
-			// }
-		}
+	let song = new Songs(request.body);
+	song.deleteOne({}).then((err, result) => {
+		if (err) return response.json({ message: 'unable to delete song' });
+		response.json({ message: 'One document deleted' });
 	});
 };
 
