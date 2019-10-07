@@ -20,9 +20,9 @@ exports.getSong = (request, response) => {
 };
 
 exports.deleteSong = (request, response) => {
-	let song = new songSchema(request.body);
+	let song = songSchema;
 	song
-		.deleteOne()
+		.deleteOne({})
 		.then((result) => response.json({ message: 'delete success' }))
 		.catch((err) => response.json({ message: 'failed to delete song' }));
 };
