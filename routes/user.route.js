@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { userById, getUser, getAllUser, postUser } = require('../controllers/user.controller');
+const { comment, uncomment } = require('../controllers/song.controller');
 const { userValidator } = require('../validators/user.validator');
 
 router.post('/user', userValidator, postUser);
@@ -9,7 +10,7 @@ router.get('/user', getAllUser);
 router.param('userId', userById);
 
 // //comments
-// router.put('/song/comment', comment);
-// router.put('/song/uncomment', uncomment);
+router.put('/song/comment', comment);
+router.put('/song/uncomment', uncomment);
 
 module.exports = router;

@@ -30,14 +30,14 @@ const songSchema = new mongoose.Schema({
 	genre: {
 		type: String,
 		required: true
-	}
-	// comments: [
-	// 	{
-	// 		comment: String,
-	// 		postedBy: { type: ObjectId, ref: 'Users' },
-	// 		createdOn: { type: Date, default: Date.now }
-	// 	}
-	// ]
+	},
+	comments: [
+		{
+			comment: String,
+			postedBy: { type: ObjectId, ref: 'Users' },
+			createdOn: { type: Date, default: Date.now }
+		}
+	]
 });
 
 module.exports = mongoose.model('Songs', songSchema);

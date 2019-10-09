@@ -47,34 +47,3 @@ exports.getAllUser = (request, response) => {
 	const user = userSchema;
 	user.find().then((users) => response.json(users)).catch((err) => response.json(err));
 };
-
-// exports.comment = (request, response) => {
-// 	let comment = request.body.comment;
-// 	const song = new Songs(request.body);
-// 	comment.postedBy = request.body.userId;
-// 	song
-// 		.findByIdAndUpdate(request.body.songId, { $push: { comments: comment } }, { new: true })
-// 		.populate('comments.postedby', '_id firstname')
-// 		.populate('postedBy', '_id firstname')
-// 		.exec((err, result) => {
-// 			if (err) {
-// 				return response.status(400).json({ error: err });
-// 			} else {
-// 				response.json(result);
-// 			}
-// 		});
-// };
-
-// exports.uncomment = (request, response) => {
-// 	comment.postedBy = request.body.userId;
-// 	Post.findByIdAndUpdate(request.body.postId, { $pull: { comments: { _id: this.comment._id } } }, { new: true })
-// 		.populate('comments.postedby', '_id firstname')
-// 		.populate('postedBy', '_id firstname')
-// 		.exec((err, result) => {
-// 			if (err) {
-// 				return response.status(400).json({ error: err });
-// 			} else {
-// 				response.json(result);
-// 			}
-// 		});
-// };
