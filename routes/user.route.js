@@ -5,7 +5,7 @@ const { userValidator } = require('../validators/user.validator');
 
 router.post('/user', userValidator, postUser);
 router.get('/user/:userId', getUser);
-router.get('/alluser', getAllUser);
+router.get('/user', getAllUser);
 router.param('userId', userById);
 
 // //comments
