@@ -1,7 +1,7 @@
-const userSchema = require('../models/user.model');
+const USER = require('../models/user.model');
 
 exports.userById = (request, response, next, id) => {
-	userSchema.findById(id).exec((err, user) => {
+	USER.findById(id).exec((err, user) => {
 		if (err || !user) {
 			return response.status(400).json({
 				error: 'User not found'
@@ -17,7 +17,7 @@ exports.getUser = (request, response) => {
 };
 
 exports.postUser = (request, response) => {
-	const user = new userSchema(request.body);
+	const user = new USER(request.body);
 	console.log('Creating new user:', request.body);
 	user
 		.save()
@@ -44,6 +44,5 @@ exports.postUser = (request, response) => {
 };
 
 exports.getAllUser = (request, response) => {
-	const user = userSchema;
-	user.find().then((users) => response.json(users)).catch((err) => response.json(err));
+	USER.find().then((users) => response.json(users)).catch((err) => response.json(err));
 };

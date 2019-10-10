@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { postSong, song, getAllSong, deleteSong, songById } = require('../controllers/song.controller');
+const { postSong, song, allSong, deleteSong, songById, comment, uncomment } = require('../controllers/song.controller');
 const { songValidator } = require('../validators/song.validator');
 
-router.get('/song', getAllSong);
+router.param('songId', songById);
 router.get('/song/:songId', song);
+router.get('/song', allSong);
 router.post('/song', songValidator, postSong);
 router.delete('/song', deleteSong);
-router.param('songId', songById);
+router.post('/song/comment', comment);
+router.post('/song', uncomment);
 
 // comments
 // router.put('/song/comment', comment);
