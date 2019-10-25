@@ -16,7 +16,7 @@ exports.getUser = (request, response) => {
 	return response.json(request.profile);
 };
 
-exports.postUser = (request, response) => {
+exports.createUser = (request, response) => {
 	const user = new USER(request.body);
 	console.log('Creating new user:', request.body);
 	user

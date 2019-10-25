@@ -25,7 +25,7 @@ mongoose.connection.on('error', (err) => {
 //bring in routes
 const root = require('./routes/root.route');
 const user = require('./routes/user.route');
-const song = require('./routes/song.route');
+const song = require('./routes/post.route');
 
 //using middlewares
 app.use(bodyParser.urlencoded({ extended: false }));

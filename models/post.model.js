@@ -3,31 +3,12 @@ const { ObjectId } = mongoose.Schema;
 //considering one to one relationship between song and artist
 //Also assuming one user can add only one comment to a song
 
-const songSchema = new mongoose.Schema({
+const postSchema = new mongoose.Schema({
 	title: {
 		type: String,
 		required: true
 	},
-	artist: {
-		firstName: {
-			type: String,
-			required: true
-		},
-
-		lastName: {
-			type: String,
-			required: true
-		},
-		isFamous: {
-			type: Boolean,
-			required: true
-		}
-	},
-	album: {
-		type: String,
-		required: true
-	},
-	genre: {
+	body: {
 		type: String,
 		required: true
 	},
@@ -41,4 +22,4 @@ const songSchema = new mongoose.Schema({
 	]
 });
 
-module.exports = mongoose.model('SONG', songSchema);
+module.exports = mongoose.model('POST', postSchema);
