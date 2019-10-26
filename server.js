@@ -23,9 +23,10 @@ mongoose.connection.on('error', (err) => {
 });
 
 //bring in routes
-const root = require('./routes/root.route');
-const user = require('./routes/user.route');
-const song = require('./routes/post.route');
+const rootRoutes = require('./routes/root.route');
+const userRoutes = require('./routes/user.route');
+const postRoutes = require('./routes/post.route');
+const authRoutes = require('./routes/auth.route');
 
 //using middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,6 +35,7 @@ app.use(morgan('dev'));
 app.use(expressValidator());
 
 //mounting routes using middleware
-app.use('/', root);
-app.use('/', user);
-app.use('/', song);
+app.use('/', rootRoutes);
+app.use('/', userRoutes);
+app.use('/', postRoutes);
+app.use('/', authRoutes);
