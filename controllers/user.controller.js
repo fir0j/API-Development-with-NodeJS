@@ -21,7 +21,7 @@ exports.createUser = (request, response) => {
 	console.log('Creating new user:', request.body);
 	user
 		.save()
-		.then((user) => response.json({ message: 'success' }))
+		.then((user) => response.json({ message: 'user created successfully' }))
 		.catch((err) => response.json({ message: 'unable to create new user' }));
 
 	/*
