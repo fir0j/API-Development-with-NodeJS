@@ -61,6 +61,11 @@ userSchema.methods = {
 		} catch (err) {
 			return '';
 		}
+	},
+
+	//again generating hash using user entered password and comparing with the stored hash for that passwoord.
+	authenticate: function(unVerifiedPassword) {
+		return this.hashed_password == this.encryptPassword(unVerifiedPassword);
 	}
 };
 

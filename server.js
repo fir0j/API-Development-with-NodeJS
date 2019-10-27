@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
@@ -43,8 +44,9 @@ const authRoutes = require('./routes/auth.route');
 //using middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(expressValidator());
+app.use(morgan('dev'));
 
 //mounting routes using middleware
 app.use('/', rootRoutes);
