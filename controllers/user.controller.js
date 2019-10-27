@@ -1,4 +1,5 @@
 const USER = require('../models/user.model');
+var _ = require('lodash');
 
 exports.userById = (request, response, next, id) => {
 	USER.findById(id).exec((err, user) => {
@@ -14,6 +15,8 @@ exports.userById = (request, response, next, id) => {
 };
 
 exports.getUserById = (request, response) => {
+	request.profile.salt = undefined;
+	request.profile.hashed_password = undefined;
 	return response.json(request.profile);
 };
 
@@ -45,7 +48,10 @@ exports.createUser = (request, response) => {
 };
 
 exports.getAllUser = (request, response) => {
-	USER.find().then((users) => response.json(users)).catch((err) => response.json(err));
+	USER.find()
+		.select('name email created updated')
+		.then((users) => response.json(users))
+		.catch((err) => response.json(err));
 };
 
 exports.hasAuthorization = (req, res, next) => {
@@ -56,4 +62,36 @@ exports.hasAuthorization = (req, res, next) => {
 			error: 'User is not authorized to perform this action'
 		});
 	}
+};
+
+exports.updateUserProfile = (req, res, next) => {
+	let user = req.profile;
+	console.log(user, 'updating profile');
+	user = _.extend(user, req.body); // extend(old objeject, new object) will mutate the old object with new object
+	console.log(user, 'updating profile');
+	user.updated = new Date();
+	user.save((err) => {
+		if (err) {
+			return res.status(400).json({
+				error: 'Your are not authorized to perform profile update'
+			});
+		}
+		user.salt = undefined;
+		user.hashed_password = undefined;
+		res.json({ user });
+	});
+};
+
+exports.deleteUser = (req, res, next) => {
+	let user = req.profile;
+	user.remove((err, user) => {
+		if (err) {
+			return res.status(400).json({
+				error: err
+			});
+		}
+		user.hashed_password = undefined;
+		user.salt = undefined;
+		res.json({ Message: 'user deleted successfully' });
+	});
 };
