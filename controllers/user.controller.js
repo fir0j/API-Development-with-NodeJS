@@ -7,6 +7,7 @@ exports.userById = (request, response, next, id) => {
 				error: 'User not found'
 			});
 		}
+		//adding a new property to the request object called profile containing user found by id
 		request.profile = user;
 		next();
 	});
@@ -45,4 +46,14 @@ exports.createUser = (request, response) => {
 
 exports.getAllUser = (request, response) => {
 	USER.find().then((users) => response.json(users)).catch((err) => response.json(err));
+};
+
+exports.hasAuthorization = (req, res, next) => {
+	// providing authorization to the user on his profile only
+	const authorized = req.profile & req.auth & (req.profile._id === req.auth._id);
+	if (!authorized) {
+		return res.status(403).json({
+			error: 'User is not authorized to perform this action'
+		});
+	}
 };

@@ -1,5 +1,6 @@
 const USER = require('../models/user.model');
 var jwt = require('jsonwebtoken');
+var expressJWT = require('express-jwt');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -56,3 +57,9 @@ exports.signout = (request, response) => {
 	response.clearCookie('loginToken');
 	return response.json({ Message: 'signout successful' });
 };
+
+exports.requireSignin = expressJWT({
+	secret: process.env.JWT_SECRET,
+	userProperty: 'auth'
+	// if the token received is valid, express-jwt appends the verified user's id as an auth key to the request object.
+});

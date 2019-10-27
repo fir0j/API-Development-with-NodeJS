@@ -53,3 +53,9 @@ app.use('/', rootRoutes);
 app.use('/', userRoutes);
 app.use('/', postRoutes);
 app.use('/', authRoutes);
+// this is custom middleware and should be placed below authRoutes so that it will only execute after auth err encountered
+app.use(function(err, req, res, next) {
+	if (err.name === 'UnauthorizedError') {
+		res.status(401).json({ error: 'Unauthorized ! please submit correct signinToken' });
+	}
+});

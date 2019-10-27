@@ -4,13 +4,10 @@ const { userById, getUser, getAllUser, createUser } = require('../controllers/us
 const { comment, uncomment } = require('../controllers/post.controller');
 const { userValidator } = require('../validators/user.validator');
 
-router.post('/user', userValidator, createUser);
+//any route containing /user/:userId, our app will first execute userById and then getUser
 router.get('/user/:userId', getUser);
-router.get('/user', getAllUser);
 router.param('userId', userById);
-
-// //comments
-router.put('/song/comment', comment);
-router.put('/song/uncomment', uncomment);
+router.post('/user', userValidator, createUser);
+router.get('/user', getAllUser);
 
 module.exports = router;
