@@ -1,5 +1,5 @@
 {
-	"name": "Zyper-Assessment-Test",
+	"name": "SocialNetworkAPI",
 	"version": "1.0.0",
 	"description": "",
 	"main": "server.js",
@@ -9,15 +9,15 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/fir0j/Zyper-Assessment-Test.git"
+		"url": "git+https://github.com/fir0j/SocialNetworkAPI.git"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/fir0j/Zyper-Assessment-Test/issues"
+		"url": "https://github.com/fir0j/SocialNetworkAPI.git/issues"
 	},
-	"homepage": "https://github.com/fir0j/Zyper-Assessment-Test#readme",
+	"homepage": "https://github.com/fir0j/SocialNetworkAPI.git#readme",
 	"dependencies": {
 		"body-parser": "^1.19.0",
 		"cookie-parser": "^1.4.4",
