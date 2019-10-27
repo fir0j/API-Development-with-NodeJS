@@ -1,3 +1,3 @@
-exports.getRoot = (request, response) => {
+exports.getAPIEndPoints = (request, response) => {
 	response.json('server is active');
 };

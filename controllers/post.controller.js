@@ -14,7 +14,7 @@ exports.postById = (request, response, next, id) => {
 	});
 };
 
-exports.post = (request, response) => {
+exports.getPostById = (request, response) => {
 	return response.json(request.post);
 };
 
@@ -26,7 +26,7 @@ exports.createPost = (request, response) => {
 		.catch((err) => response.json({ message: 'unable to create post' }));
 };
 
-exports.allPost = (request, response) => {
+exports.getAllPost = (request, response) => {
 	POST.find()
 		.populate('comments.postedBy', '_id name')
 		.then((posts) => response.json(posts))

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getRoot } = require('../controllers/root.controller');
+const { getAPIEndPoints } = require('../controllers/root.controller');
 
-router.get('/', getRoot);
+router.get('/', getAPIEndPoints);
 
 module.exports = router;

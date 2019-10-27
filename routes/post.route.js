@@ -4,8 +4,8 @@ const { userById } = require('../controllers/user.controller');
 const router = express.Router();
 const {
 	createPost,
-	post,
-	allPost,
+	getPostById,
+	getAllPost,
 	deletePost,
 	postById,
 	comment,
@@ -17,15 +17,13 @@ const { postValidator } = require('../validators/post.validator');
 router.param('userId', userById);
 //any route containing /post/:postId, our app will first execute postById and then post
 router.param('postId', postById);
-router.get('/post/:postId', post);
-router.get('/post', allPost);
+router.get('/post/:postId', getPostById);
+router.get('/post', getAllPost);
 router.post('/post', requireSignin, postValidator, createPost);
 router.delete('/post', deletePost);
-router.post('/post/comment', comment);
-router.post('/post', uncomment);
 
 // comments
-// router.put('/song/comment', comment);
-// router.put('/song/uncomment', uncomment);
+// router.put('/post/comment', comment);
+// router.put('/post/uncomment', uncomment);
 
 module.exports = router;

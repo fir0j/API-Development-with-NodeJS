@@ -13,7 +13,7 @@ exports.userById = (request, response, next, id) => {
 	});
 };
 
-exports.getUser = (request, response) => {
+exports.getUserById = (request, response) => {
 	return response.json(request.profile);
 };
 
