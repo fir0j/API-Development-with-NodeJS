@@ -19,7 +19,7 @@ router.param('userId', userById);
 router.param('postId', postById);
 router.get('/post/:postId', getPostById);
 router.get('/post', getAllPost);
-router.post('/post', requireSignin, postValidator, createPost);
+router.post('/post/new/:userId', requireSignin, createPost, postValidator);
 router.delete('/post', deletePost);
 
 // comments

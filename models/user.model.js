@@ -14,17 +14,17 @@ const userSchema = new mongoose.Schema({
 		required: true,
 		trim: true
 	},
+	salt: String,
 	hashed_password: {
 		type: String,
 		required: true,
 		trim: true
 	},
-	salt: String,
-	created: {
+	updatedOn: Date,
+	createdOn: {
 		type: Date,
 		default: Date.now
-	},
-	updated: Date
+	}
 });
 
 /*

@@ -1,4 +1,6 @@
 const POST = require('../models/post.model');
+// const formidable = require('formidable');
+// const fs = require('fs');
 
 //populate method will only populate if SONG schema has a field call postedBy and it already contains id of documents of other schema
 exports.postById = (request, response, next, id) => {
@@ -18,17 +20,25 @@ exports.getPostById = (request, response) => {
 	return response.json(request.post);
 };
 
-exports.createPost = (request, response) => {
-	let post = new POST(request.body);
-	post
-		.save()
-		.then((result) => response.json({ message: 'post created successfully' }))
-		.catch((err) => response.json({ message: 'unable to create post' }));
+exports.createPost = (req, res) => {
+	let post = new POST(req.body);
+	req.profile.salt = undefined;
+	req.profile.hashed_password = undefined;
+	post.postedBy = req.profile;
+	post.save((err, result) => {
+		if (err) {
+			return res.status(400).json({
+				error: err
+			});
+		}
+
+		res.json(result);
+	});
 };
 
 exports.getAllPost = (request, response) => {
 	POST.find()
-		.populate('comments.postedBy', '_id name')
+		.populate('postedBy', '_id name email')
 		.then((posts) => response.json(posts))
 		.catch((err) => response.json({ message: 'failed to fetch posts' }));
 };
@@ -76,3 +86,41 @@ exports.uncomment = (request, response) => {
 			}
 		});
 };
+
+// exports.createPost2 = (request, response, next) => {
+// 	let form = new formidable.IncomingForm();
+// 	form.keepExtensions = true;
+// 	form.parse(request, (err, fields, files) => {
+// 		if (err) {
+// 			return response.status(400).json({
+// 				error: 'Image could not be uploaded'
+// 			});
+// 		}
+
+// 		let post = new POST(fields);
+// 		console.log(request.profile);
+// 		request.profile.salt = undefined;
+// 		request.profile.hashed_password = undefined;
+// 		post.postById = request.profile;
+// 		if (files.photo) {
+// 			post.photo.data = fs.readFileSync(files.photo.path);
+// 			post.photo.contentType = files.photo.type;
+// 		}
+
+// 		post.save((err, result) => {
+// 			if (err) {
+// 				return response.status(400).json({
+// 					error: err
+// 				});
+// 			}
+
+// 			response.json(result);
+// 			next();
+// 		});
+// 	});
+// 	// let post = new POST(request.body);
+// 	// post
+// 	// 	.save()
+// 	// 	.then((result) => response.json({ message: 'post created successfully' }))
+// 	// 	.catch((err) => response.json({ message: 'unable to create post' }));
+// };
