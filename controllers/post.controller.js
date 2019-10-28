@@ -4,16 +4,29 @@ const POST = require('../models/post.model');
 
 //populate method will only populate if SONG schema has a field call postedBy and it already contains id of documents of other schema
 exports.postById = (request, response, next, id) => {
-	POST.findById(id).populate('postedBy').populate('comments.postedBy', 'firstName').exec((err, post) => {
+	POST.findById(id).populate('postedBy', '_id name email').exec((err, post) => {
 		if (err || !post) {
 			return response.status(400).json({
 				error: 'post not found'
 			});
 		}
 		request.post = post;
-		console.log('populated postedBy field');
 		next();
 	});
+};
+
+exports.postByUser = (request, response) => {
+	POST.find({ postedBy: request.profile._id })
+		.populate('postedBy', '_id name')
+		.sort('_created')
+		.exec((err, posts) => {
+			if (err) {
+				return response.status(400).json({
+					error: err
+				});
+			}
+			response.json(posts);
+		});
 };
 
 exports.getPostById = (request, response) => {
@@ -38,7 +51,7 @@ exports.createPost = (req, res) => {
 
 exports.getAllPost = (request, response) => {
 	POST.find()
-		.populate('postedBy', '_id name email')
+		.populate('postedBy', '_id name')
 		.then((posts) => response.json(posts))
 		.catch((err) => response.json({ message: 'failed to fetch posts' }));
 };

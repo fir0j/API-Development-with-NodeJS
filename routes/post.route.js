@@ -8,6 +8,7 @@ const {
 	getAllPost,
 	deletePost,
 	postById,
+	postByUser,
 	comment,
 	uncomment
 } = require('../controllers/post.controller');
@@ -18,6 +19,7 @@ router.param('userId', userById);
 //any route containing /post/:postId, our app will first execute postById and then post
 router.param('postId', postById);
 router.get('/post/:postId', getPostById);
+router.get('/post/by/:userId', postByUser);
 router.get('/post', getAllPost);
 router.post('/post/new/:userId', requireSignin, createPost, postValidator);
 router.delete('/post', deletePost);
