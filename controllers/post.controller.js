@@ -1,10 +1,11 @@
 const POST = require('../models/post.model');
+const _ = require('lodash');
 // const formidable = require('formidable');
 // const fs = require('fs');
 
 //populate method will only populate if SONG schema has a field call postedBy and it already contains id of documents of other schema
 exports.postById = (request, response, next, id) => {
-	POST.findById(id).populate('postedBy', '_id name email').exec((err, post) => {
+	POST.findById(id).populate('postedBy', '_id name').exec((err, post) => {
 		if (err || !post) {
 			return response.status(400).json({
 				error: 'post not found'
@@ -27,6 +28,16 @@ exports.postByUser = (request, response) => {
 			}
 			response.json(posts);
 		});
+};
+
+exports.isPoster = (req, res, next) => {
+	let isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id;
+	if (!isPoster) {
+		return res.status(403).json({
+			error: 'User is not authorized'
+		});
+	}
+	next();
 };
 
 exports.getPostById = (request, response) => {
@@ -57,11 +68,28 @@ exports.getAllPost = (request, response) => {
 };
 
 exports.deletePost = (request, response) => {
-	let post = postSchema;
+	let post = request.post;
+	console.log(post);
 	post
-		.deleteOne({})
+		.deleteOne()
 		.then((result) => response.json({ message: 'post deleted successfully' }))
 		.catch((err) => response.json({ message: 'failed to delete post' }));
+};
+
+exports.updatePost = (req, res, next) => {
+	let post = req.post;
+	post = _.extend(post, req.body); // extend(old objeject, new object) will mutate the old object with new object
+	console.log(post);
+	post.updatedOn = Date.now();
+	post.save((err) => {
+		if (err) {
+			return res.status(400).json({
+				error: 'Your are not authorized to perform profile update'
+			});
+		}
+		res.json(post);
+		next();
+	});
 };
 
 exports.comment = (request, response) => {

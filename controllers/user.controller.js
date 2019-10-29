@@ -1,5 +1,5 @@
 const USER = require('../models/user.model');
-var _ = require('lodash');
+const _ = require('lodash');
 
 exports.userById = (request, response, next, id) => {
 	USER.findById(id).exec((err, user) => {
@@ -66,10 +66,8 @@ exports.hasAuthorization = (req, res, next) => {
 
 exports.updateUserProfile = (req, res, next) => {
 	let user = req.profile;
-	console.log(user, 'updating profile');
 	user = _.extend(user, req.body); // extend(old objeject, new object) will mutate the old object with new object
-	console.log(user, 'updating profile');
-	user.updated = new Date();
+	user.updatedOn = new Date();
 	user.save((err) => {
 		if (err) {
 			return res.status(400).json({
