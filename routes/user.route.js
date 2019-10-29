@@ -13,11 +13,11 @@ const { userValidator } = require('../validators/user.validator');
 const { requireSignin } = require('../controllers/auth.controller');
 
 //any route containing /user/:userId, our app will first execute userById and then getUser
+router.get('/users', getAllUser);
 router.get('/user/:userId', requireSignin, getUserById);
-router.param('userId', userById);
 router.post('/user', userValidator, createUser);
-router.get('/user', getAllUser);
 router.put('/user/:userId', requireSignin, updateUserProfile);
 router.delete('/user/:userId', requireSignin, deleteUser);
+router.param('userId', userById);
 
 module.exports = router;

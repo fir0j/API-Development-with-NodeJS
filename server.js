@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
 const expressValidator = require('express-validator');
+const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -22,7 +23,6 @@ mongoose.connection.on('error', (err) => {
 });
 
 //bring in routes
-const rootRoutes = require('./routes/root.route');
 const userRoutes = require('./routes/user.route');
 const postRoutes = require('./routes/post.route');
 const authRoutes = require('./routes/auth.route');
@@ -35,10 +35,20 @@ app.use(expressValidator());
 app.use(morgan('dev'));
 
 //mounting routes using middleware
-app.use('/', rootRoutes);
 app.use('/', userRoutes);
 app.use('/', postRoutes);
 app.use('/', authRoutes);
+app.get('/', (req, res) => {
+	fs.readFile('docs/APIEndPointsDoc.json', (err, data) => {
+		if (err) {
+			res.status(400).json({
+				error: err
+			});
+		}
+		const docs = JSON.parse(data);
+		res.json(docs);
+	});
+});
 // this is custom middleware and should be placed below authRoutes so that it will only execute after auth err encountered
 app.use(function(err, req, res, next) {
 	if (err.name === 'UnauthorizedError') {

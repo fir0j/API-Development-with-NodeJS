@@ -16,7 +16,7 @@ const {
 } = require('../controllers/post.controller');
 const { postValidator } = require('../validators/post.validator');
 
-router.get('/post', getAllPost);
+router.get('/posts	', getAllPost);
 router.get('/post/:postId', getPostById);
 router.get('/post/by/:userId', postByUser);
 router.post('/post/new/:userId', requireSignin, createPost, postValidator);
