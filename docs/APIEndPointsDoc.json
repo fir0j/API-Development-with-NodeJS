@@ -3,6 +3,8 @@
 	"/signup": "signup for new user",
 	"/signin": "signin for existing user",
 	"/signout": "signout for logged in user",
+	"/forgot-password": "report if you have forgot your password",
+	"/reset-password": "get a reset link in the email associated with your account",
 	"/users": "get all users",
 	"/user/:userId": "get/update/delete user by logged in user",
 	"/posts": "get all posts",

@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
 			ref: 'USER'
 		}
 	],
+	resetPasswordLink: {
+		data: String,
+		default: ''
+	},
 	salt: String,
 	hashed_password: {
 		type: String,
