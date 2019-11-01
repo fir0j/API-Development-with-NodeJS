@@ -8,5 +8,11 @@
 	"/posts": "get all posts",
 	"/post/:postId": "get/update/delete post by logged in user",
 	"/post/new/:postId": "create a new post by logged in user",
-	"/post/by/:userId": "get all post a of particular user"
+	"/post/by/:userId": "get all post a of particular user",
+	"/post/like": "likes a post",
+	"/post/unlike": "unlikes a post",
+	"/post/comment": "comment on a post",
+	"/post/uncomment": "uncomment on a post",
+	"/user/follow": "follow a user",
+	"/user/unfollow": "unfollow a user"
 }

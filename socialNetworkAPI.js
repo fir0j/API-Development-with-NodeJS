@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const app = express();
 const expressValidator = require('express-validator');
 const fs = require('fs');
+var cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -31,6 +32,7 @@ const authRoutes = require('./routes/auth.route');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 app.use(expressValidator());
 app.use(morgan('dev'));
 
