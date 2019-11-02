@@ -18,6 +18,14 @@ exports.signup = async (request, response) => {
 	response.status(200).json({ message: 'signup success ! please login' });
 };
 
+exports.requireSignin = expressJWT({
+	secret: process.env.JWT_SECRET,
+	userProperty: 'auth'
+	// Now when the user submit the token during sign in as authorization token, JWT is again able to decode that
+	// same PAYLOAD using HEADER info and the same SECRETE KEY in the token and append it to the request body as auth key
+	// which helps our API to keep track of signed in user.
+});
+
 /*
 here making function asynchronous because operation inside this function may take time but we don't want 
 our user to get stuck or browser to hang until those operation completes.
@@ -50,7 +58,7 @@ exports.signin = (request, response) => {
 
 		// return login token in two form: as cookie and as response. Anyone of them can be used for authentication
 		const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET);
-		//jwt tokens adds a field called auth in request.body with attribute _Id and role
+		//JSONWEBTOKEN(JWT) encodes DEFAULT HEADER, OUR CUSTOM PAYLOAD(_id, role), OUR CUSTOM SECRETE_KEY into a token.
 		response.cookie('loginToken', token, { expire: new Date() + 9999 });
 		const { _id, email, name, role } = user;
 		return response.json({ token, user: { _id, email, name, role } });
@@ -91,12 +99,6 @@ exports.signout = (request, response) => {
 	response.clearCookie('loginToken');
 	return response.json({ Message: 'signout successful' });
 };
-
-exports.requireSignin = expressJWT({
-	secret: process.env.JWT_SECRET,
-	userProperty: 'auth'
-	// if the token received is valid, express-jwt appends the verified user's id as an auth key to the request object.
-});
 
 // add forgotPassword and resetPassword methods
 exports.forgotPassword = (req, res) => {
