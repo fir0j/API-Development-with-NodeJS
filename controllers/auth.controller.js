@@ -41,14 +41,16 @@ exports.signin = (request, response) => {
 			});
 		}
 
+		//passsing password as argument to one of the permanent methods in user schema
 		if (!user.authenticate(password)) {
 			return response.status(401).json({
 				error: 'Email and password do not match'
 			});
 		}
 
-		// return login token in two form: as cookie and as response. Anyone can be used for authentication
+		// return login token in two form: as cookie and as response. Anyone of them can be used for authentication
 		const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET);
+		//jwt tokens adds a field called auth in request.body with attribute _Id and role
 		response.cookie('loginToken', token, { expire: new Date() + 9999 });
 		const { _id, email, name, role } = user;
 		return response.json({ token, user: { _id, email, name, role } });

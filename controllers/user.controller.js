@@ -40,8 +40,8 @@ exports.hasAuthorization = (req, res, next) => {
 	const sameUser = req.profile && req.auth && req.profile._id == req.auth._id;
 	const adminUser = req.profile && req.auth && req.auth.role == 'admin';
 	const authorized = sameUser || adminUser;
-	console.log('sameUser', sameUser, 'adminUser', adminUser);
-	console.log('\n\nreq.profile', req.profile, '\n\n\nreq.auth', req.auth);
+	// console.log('sameUser', sameUser, 'adminUser', adminUser);
+	// console.log('\n\nreq.profile', req.profile, '\n\n\nreq.auth', req.auth);
 	if (!authorized) {
 		return res.status(403).json({
 			error: 'User is not authorized to perform this action'
