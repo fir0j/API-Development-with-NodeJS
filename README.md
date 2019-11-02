@@ -1,10 +1,21 @@
-# API-Development-with-NodeJS
-This api will be mainly focused on the Social networks activities like 
-users, 
-authentication, 
-forget and reset password, 
-post, 
-like,unlike,
-comment,uncomment,
-follow,unfollow 
-along with chat facility
+# API-Development using NODE, EXPRESS and MONGODB
+    "/": " get documentation for the End points of this Social Network API",
+	"/signup": "signup for new user",
+	"/signin": "signin for existing user",
+	"/signout": "signout for logged in user",
+	"/forgot-password": "report if you have forgot your password",
+	"/reset-password": "get a reset link in the email associated with your account",
+	"/social-login": "users can login with their social media account",
+	"/users": "get all users",
+	"/user/:userId": "get/update/delete user by logged in user",
+	"/posts": "get all posts",
+	"/post/:postId": "get/update/delete post by logged in user",
+	"/post/new/:postId": "create a new post by logged in user",
+	"/post/by/:userId": "get all post a of particular user",
+	"/post/like": "likes a post",
+	"/post/unlike": "unlikes a post",
+	"/post/comment": "comment on a post",
+	"/post/uncomment": "uncomment on a post",
+	"/user/follow": "follow a user",
+	"/user/unfollow": "unfollow a user"
+* CHAT Feature will be added soon
