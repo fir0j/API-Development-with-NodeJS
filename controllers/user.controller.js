@@ -30,19 +30,24 @@ exports.createUser = (request, response) => {
 
 exports.getAllUser = (request, response) => {
 	USER.find()
-		.select('name email created updated')
+		.select('name email created updated role')
 		.then((users) => response.json(users))
 		.catch((err) => response.json(err));
 };
 
 exports.hasAuthorization = (req, res, next) => {
-	// providing authorization to the user on his profile only
-	const authorized = req.profile & req.auth & (req.profile._id === req.auth._id);
+	// providing authorization to the user on his profile only or to admin
+	const sameUser = req.profile && req.auth && req.profile._id == req.auth._id;
+	const adminUser = req.profile && req.auth && req.auth.role == 'admin';
+	const authorized = sameUser || adminUser;
+	console.log('sameUser', sameUser, 'adminUser', adminUser);
+	console.log('\n\nreq.profile', req.profile, '\n\n\nreq.auth', req.auth);
 	if (!authorized) {
 		return res.status(403).json({
 			error: 'User is not authorized to perform this action'
 		});
 	}
+	next();
 };
 
 exports.updateUserProfile = (req, res, next) => {

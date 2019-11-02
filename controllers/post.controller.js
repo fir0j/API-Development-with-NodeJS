@@ -8,7 +8,7 @@ exports.postById = (request, response, next, id) => {
 	POST.findById(id)
 		.populate('postedBy', '_id name')
 		.populate('comments', 'text created')
-		.populate('comments.postedBy', '_id name')
+		.populate('comments.postedBy', '_id name role')
 		.exec((err, post) => {
 			if (err || !post) {
 				return response.status(400).json({
@@ -36,7 +36,9 @@ exports.postByUser = (request, response) => {
 };
 
 exports.isPoster = (req, res, next) => {
-	let isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id;
+	let sameUser = req.post && req.auth && req.post.postedBy._id == req.auth._id;
+	let adminUser = req.post && req.auth && req.auth.role == 'admin';
+	let isPoster = sameUser || adminUser;
 	if (!isPoster) {
 		return res.status(403).json({
 			error: 'User is not authorized'
@@ -55,19 +57,17 @@ exports.createPost = (req, res) => {
 	req.profile.hashed_password = undefined;
 	post.postedBy = req.profile;
 	post.save().then((result) => res.json(result)).catch((err) => res.json(err));
-	next();
 };
 
-exports.getAllPost = (request, response, next) => {
+exports.getAllPost = (request, response) => {
 	POST.find()
 		.populate('postedBy', '_id name')
 		.populate('comments', 'text created')
 		.populate('comments.postedBy', '_id name')
 		.select('_id title body created likes')
 		.sort({ created: -1 })
-		.then((posts) => response.json(posts))
+		.then((result) => response.json(result))
 		.catch((err) => response.json(err));
-	next();
 };
 
 exports.deletePost = (request, response, next) => {

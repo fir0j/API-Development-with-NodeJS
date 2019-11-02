@@ -48,10 +48,40 @@ exports.signin = (request, response) => {
 		}
 
 		// return login token in two form: as cookie and as response. Anyone can be used for authentication
-		const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+		const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET);
 		response.cookie('loginToken', token, { expire: new Date() + 9999 });
-		const { _id, email, name } = user;
-		return response.json({ token, user: { _id, email, name } });
+		const { _id, email, name, role } = user;
+		return response.json({ token, user: { _id, email, name, role } });
+	});
+};
+
+exports.socialLogin = (req, res) => {
+	// try signup by finding user with req.email
+	let user = USER.findOne({ email: req.body.email }, (err, user) => {
+		if (err || !user) {
+			// create a new user and login
+			user = new USER(req.body);
+			req.profile = user;
+			user.save();
+			// generate a token with user id and secret
+			const token = jwt.sign({ _id: user._id, iss: 'NODEAPI' }, process.env.JWT_SECRET);
+			res.cookie('t', token, { expire: new Date() + 9999 });
+			// return response with user and token to frontend client
+			const { _id, name, email } = user;
+			return res.json({ token, user: { _id, name, email } });
+		} else {
+			// update existing user with new social info and login
+			req.profile = user;
+			user = _.extend(user, req.body);
+			user.updated = Date.now();
+			user.save();
+			// generate a token with user id and secret
+			const token = jwt.sign({ _id: user._id, iss: 'NODEAPI' }, process.env.JWT_SECRET);
+			res.cookie('t', token, { expire: new Date() + 9999 });
+			// return response with user and token to frontend client
+			const { _id, name, email } = user;
+			return res.json({ token, user: { _id, name, email } });
+		}
 	});
 };
 

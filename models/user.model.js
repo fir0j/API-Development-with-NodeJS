@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema({
 		required: true,
 		trim: true
 	},
+	role: {
+		type: String,
+		default: 'subscriber'
+	},
 	updatedOn: Date,
 	createdOn: {
 		type: Date,

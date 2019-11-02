@@ -18,7 +18,7 @@ const {
 } = require('../controllers/post.controller');
 const { postValidator } = require('../validators/post.validator');
 
-router.get('/posts	', getAllPost);
+router.get('/posts', getAllPost);
 router.put('/post/like', requireSignin, like);
 router.put('/post/unlike', requireSignin, unlike);
 router.put('/post/comment', requireSignin, comment);
