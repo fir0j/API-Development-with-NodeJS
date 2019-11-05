@@ -34,8 +34,8 @@ exports.userValidator = (request, response, next) => {
 
 exports.signupValidator = (request, response, next) => {
 	//validation  for Name
-	request.check('name', 'Write the First Name').notEmpty();
-	request.check('name', 'First Name must be between 4 to 32 characters').isLength({
+	request.check('name', 'Write the Name').notEmpty();
+	request.check('name', 'Name must be between 4 to 32 characters').isLength({
 		min: 4,
 		max: 32
 	});

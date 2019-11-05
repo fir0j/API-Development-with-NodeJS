@@ -115,7 +115,7 @@ exports.unlike = (req, res) => {
 };
 
 exports.comment = (request, response) => {
-	let comment = request.body.comment;
+	let comment = request.body.comments;
 	comment.postedBy = request.body.userId;
 	// request.body.userId is pointing to the id of the logged in user
 
@@ -134,7 +134,7 @@ exports.comment = (request, response) => {
 };
 
 exports.uncomment = (request, response) => {
-	let comment = request.body.comment;
+	let comment = request.body.comments;
 
 	POST.findByIdAndUpdate(request.body.postId, { $pull: { comments: { _id: comment._id } } }, { new: true })
 		.populate('comments.postedBy', '_id name')
