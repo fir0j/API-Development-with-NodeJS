@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema({
 /*
 
 what is virtual field in mongodb ?
-> virtual fields aret the field which only exist logically or at implementation level and don't get persisted/stored in the database or document's collection.
+> virtual fields are the field which only exist logically or at implementation level and don't get persisted/stored in the database or document's collection.
 
 */
 
